@@ -3141,33 +3141,45 @@ function redzlib:MakeWindow(Configs)
 end
 
 return redzlib
-
--- تأكد أن هذا الكود يجي بعد ما تصنع الواجهة (Window)
+-- ضع هذا الكود في نهاية السكربت تماماً
 local RunService = game:GetService("RunService")
-local coreGui = game:GetService("CoreGui")
+local CoreGui = game:GetService("CoreGui")
 
--- انتظر ثانية عشان نضمن أن الواجهة ظهرت في الـ CoreGui
-task.wait(1)
+-- وظيفة للبحث عن الإطار الرئيسي ووضع اللوجو
+task.spawn(function()
+    local mainFrame = nil
+    
+    -- سنحاول البحث عن الواجهة لمدة 10 ثوانٍ حتى تظهر
+    for i = 1, 100 do
+        local gui = CoreGui:FindFirstChild("REX-MHUB")
+        if gui then
+            -- المكتبات عادة تضع الأزرار داخل إطار اسمه 'Main' أو 'Container'
+            mainFrame = gui:FindFirstChild("Main") or gui:FindFirstChild("Container") or gui:FindFirstChild("Frame")
+            if mainFrame then break end
+        end
+        task.wait(0.1)
+    end
 
-local mainGui = coreGui:FindFirstChild("REX-MHUB") 
-local mainFrame = mainGui and mainGui:FindFirstChild("Main")
+    if mainFrame then
+        -- إنشاء اللوجو
+        local bgLogo = Instance.new("ImageLabel")
+        bgLogo.Name = "RotatingBackground"
+        bgLogo.Size = UDim2.new(0, 250, 0, 250) -- الحجم
+        bgLogo.Position = UDim2.new(0.5, 0, 0.5, 0)
+        bgLogo.AnchorPoint = Vector2.new(0.5, 0.5)
+        bgLogo.BackgroundTransparency = 1
+        bgLogo.ImageTransparency = 0.6
+        bgLogo.Image = "rbxassetid://85742154967174"
+        bgLogo.ZIndex = 0 -- ليكون في الخلفية
+        bgLogo.Parent = mainFrame
 
-if mainFrame then
-    local bgLogo = Instance.new("ImageLabel")
-    bgLogo.Name = "BackgroundLogo"
-    bgLogo.Size = UDim2.new(0, 250, 0, 250) -- حجم اللوجو
-    bgLogo.Position = UDim2.new(0.5, 0, 0.5, 0) -- في النص بالضبط
-    bgLogo.AnchorPoint = Vector2.new(0.5, 0.5)
-    bgLogo.BackgroundTransparency = 1
-    bgLogo.ImageTransparency = 0.6 -- شفافية عشان ما يغطي الأزرار
-    bgLogo.Image = "rbxassetid://85742154967174"
-    bgLogo.ZIndex = 0 -- خليه خلف كل شيء
-    bgLogo.Parent = mainFrame
-
-    -- برمجة الدوران
-    RunService.RenderStepped:Connect(function(deltaTime)
-        bgLogo.Rotation = bgLogo.Rotation + (150 * deltaTime)
-    end)
-else
-    print("الواجهة غير موجودة، تأكد من اسم الـ Flags في الـ Library")
-end
+        -- الدوران
+        RunService.RenderStepped:Connect(function(dt)
+            bgLogo.Rotation = bgLogo.Rotation + (150 * dt)
+        end)
+        
+        warn("Spooki Hub: تم تركيب الخلفية الدوارة بنجاح!")
+    else
+        warn("Spooki Hub: لم يتم العثور على الإطار الرئيسي للواجهة.")
+    end
+end)
