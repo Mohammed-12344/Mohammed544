@@ -1,31 +1,17 @@
 --[[
-
 esse script foi reconstruido totalmente por mim (bazuka) 
 eu demorei horas apenas para fazer isso, então deixe meus creditos. 
-então, algum de vocês devem estar se perguntando "porque você fez isso"
-simples, vingança.
-"porque vingança?" porque ele vazou os dados da lolyta e ainda queria vazar a coquette.
-por mais que eu não tenho nada haver com a coquette, acho que isso foi uma falta de respeito absurda com a lolyta. 
-pois ele praticamente iludiu ela apenas para vazar ela no final..
-e se você for a lolyta e estiver vendo isso, saiba que eu gosto mt de vc lolyta.
-não sei se e muito cedo para falar isso, mais eu te amo lolyta. 
 by: Bazuka.
-
 ]]
-
 --[[
 Mensagem do sedentoporblood (stephenofc)
-
-no passado eu tambem tive muito problema com a lolyta (ela me odiava praticamente)
-mas mesmo assim isso nn anula o que o Zyronis fez,oq ele fez foi errado e ele merece sofrer as consequencias
-ainda bem que os dados da lolyta vazados em outubro/novembro Nao chegaram ate ele,afinal ele com crtz iria fazer o pior com isso!!!!!
-Lolyta se vc tiver lendo isso eu quero pedir desculpa por oq eu fiz no passado (a gente ficou desentendido e tudo mais),desde que me doxxaram na shnmax eu nunca mais fui o mesmo e agora eu n confio tanto nos outros.
-
 by: stephenofc
 ]]
 
 local Libary = loadstring(game:HttpGet("https://raw.githubusercontent.com/BRENOPOOF/slapola/refs/heads/main/Main.txt"))()
 workspace.FallenPartsDestroyHeight = -math.huge
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Window = Libary:MakeWindow({
     Title = "Zyronis Hub",
@@ -34,7 +20,6 @@ local Window = Libary:MakeWindow({
     Flags = "ZyronisHub"
 })
 
--- زر التصغير
 Window:AddMinimizeButton({
     Button = {
         Image = 'rbxassetid://76560659040388',
@@ -47,7 +32,7 @@ Window:AddMinimizeButton({
 })
 
 -- ══════════════════════════════════════════
--- تبويب المعلومات (Info)
+-- تبويب المعلومات
 -- ══════════════════════════════════════════
 local InfoTab = Window:MakeTab({ Title = "Info", Icon = "rbxassetid://15309138473" })
 
@@ -55,8 +40,8 @@ InfoTab:AddSection({ "Informações do Script" })
 InfoTab:AddParagraph({ "Owner / Developer:", "Zyronis" })
 InfoTab:AddParagraph({ "Collaboration:", "Lolytadev, Rick/Shadow and Bazuka" })
 InfoTab:AddParagraph({ "Leaked by:", "Bazuka (eu recriei tudo) se for vazar, deixe meus creditos." })
-InfoTab:AddParagraph({ "You are using:", "Zyronis Hub Brookhaven " })
-InfoTab:AddParagraph({"Your executor:", executor})
+InfoTab:AddParagraph({ "You are using:", "Zyronis Hub Brookhaven" })
+InfoTab:AddParagraph({ "Your executor:", executor })
 
 InfoTab:AddSection({ "Rejoin" })
 InfoTab:AddButton({
@@ -68,11 +53,8 @@ InfoTab:AddButton({
 })
 
 -- ══════════════════════════════════════════
--- تبويب الأسماء (Names)
+-- متغيرات تبويب الأسماء
 -- ══════════════════════════════════════════
-local NamesTab = Window:MakeTab({ Title = "🏷️ Nomes", Icon = "rbxassetid://1234567890" })
-
--- متغيرات نظام الأسماء
 _G.FLOREX_NameAnim_Toggle = false
 _G.FLOREX_Anim_Speed = 2
 _G.Names_List = {"", "", "", "", ""}
@@ -110,44 +92,43 @@ local function ResetToggles()
     _G.FLOREX_Toxic_Toggle = false
 end
 
-NamesTab:AddSection({ "✏️ Mudar Nome e Bio Manualmente" })
+-- ══════════════════════════════════════════
+-- تبويب الأسماء
+-- ══════════════════════════════════════════
+local NamesTab = Window:MakeTab({ Title = "الاسماء", Icon = "rbxassetid://15309138473" })
 
-NamesTab:AddInput({
-    Name = "Digite o RP Name",
-    Placeholder = "Digite o nome aqui...",
+-- ══ اسم وبايو مباشر ══
+NamesTab:AddSection({ "غير اسم لماب البيوت (RP Name & Bio)" })
+
+NamesTab:AddTextbox({
+    Name = "اكتب الاسم (RP Name)",
+    Default = "",
+    Placeholder = "اكتب الاسم هنا...",
     Callback = function(Value)
         pcall(function()
             local RE = ReplicatedStorage:FindFirstChild("RE")
-            if RE then 
-                local remote = RE:FindFirstChild("1RPNam1eTex1t")
-                if remote then
-                    remote:FireServer("RolePlayName", Value)
-                end
-            end
+            if RE then RE:FindFirstChild("1RPNam1eTex1t"):FireServer("RolePlayName", Value) end
         end)
     end
 })
 
-NamesTab:AddInput({
-    Name = "Digite o Bio",
-    Placeholder = "Digite a bio aqui...",
+NamesTab:AddTextbox({
+    Name = "اكتب الوصف (Bio)",
+    Default = "",
+    Placeholder = "اكتب الوصف هنا...",
     Callback = function(Value)
         pcall(function()
             local RE = ReplicatedStorage:FindFirstChild("RE")
-            if RE then 
-                local remote = RE:FindFirstChild("1RPNam1eTex1t")
-                if remote then
-                    remote:FireServer("RolePlayBio", Value)
-                end
-            end
+            if RE then RE:FindFirstChild("1RPNam1eTex1t"):FireServer("RolePlayBio", Value) end
         end)
     end
 })
 
-NamesTab:AddSection({ "🔄 Rotação Automática" })
+-- ══ تغيير تلقائي ══
+NamesTab:AddSection({ "الأسماء والبايو تغير تلقائي" })
 
 NamesTab:AddToggle({
-    Name = "Ativar Rotação Automática",
+    Name = "تشغيل تغير تلقائي الأسماء والبايو",
     Default = false,
     Callback = function(Value)
         _G.FLOREX_NameAnim_Toggle = Value
@@ -155,184 +136,74 @@ NamesTab:AddToggle({
 })
 
 NamesTab:AddSlider({
-    Name = "Velocidade da Rotação (segundos)",
-    Min = 1,
+    Name = "سرعة التغيير (ثواني)",
+    Min = 0,
     Max = 30,
     Default = 2,
-    Color = Color3.fromRGB(255, 50, 100),
     Increment = 1,
-    ValueName = "seg",
-    Callback = function(Value)
-        _G.FLOREX_Anim_Speed = Value
+    ValueName = "ثانية",
+    Callback = function(V)
+        _G.FLOREX_Anim_Speed = V
     end
 })
 
-NamesTab:AddSection({ "📝 Nomes para Rotação (5)" })
-
+NamesTab:AddSection({ "خانات الأسماء" })
 for i = 1, 5 do
-    NamesTab:AddInput({
-        Name = "Nome " .. i,
-        Placeholder = "Digite o nome " .. i .. "...",
+    NamesTab:AddTextbox({
+        Name = "تغير الاسم تلقائي " .. i,
+        Default = "",
+        Placeholder = "الاسم " .. i .. "...",
         Callback = function(Value)
             _G.Names_List[i] = Value
         end
     })
 end
 
-NamesTab:AddSection({ "📋 Bios para Rotação (5)" })
-
+NamesTab:AddSection({ "خانات الوصف (Bio)" })
 for i = 1, 5 do
-    NamesTab:AddInput({
-        Name = "Bio " .. i,
-        Placeholder = "Digite a bio " .. i .. "...",
+    NamesTab:AddTextbox({
+        Name = "تغير بايو تلقائي " .. i,
+        Default = "",
+        Placeholder = "البايو " .. i .. "...",
         Callback = function(Value)
             _G.Bios_List[i] = Value
         end
     })
 end
 
-NamesTab:AddSection({ "🌈 Efeitos de Cores" })
-
-NamesTab:AddToggle({
-    Name = "Sistema Arco-Íris 🌈",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_Rainbow_Toggle = Value
-    end
-})
+-- ══ تأثيرات الألوان ══
+NamesTab:AddSection({ "تأثيرات الألوان والسرعة" })
 
 NamesTab:AddSlider({
-    Name = "Velocidade do Arco-Íris",
-    Min = 1,
+    Name = "سرعة تلوين الرينبو",
+    Min = 0,
     Max = 10,
     Default = 5,
-    Color = Color3.fromRGB(255, 0, 255),
     Increment = 1,
-    ValueName = "vel",
-    Callback = function(Value)
-        _G.FLOREX_Rainbow_Speed = Value
+    ValueName = "سرعة",
+    Callback = function(V)
+        _G.FLOREX_Rainbow_Speed = V
     end
 })
 
-NamesTab:AddToggle({
-    Name = "Vermelho e Preto 🔥",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_RedBlack_Toggle = Value
-    end
-})
+NamesTab:AddToggle({ Name = "نظام قوس قزح 🌈",       Default = false, Callback = function(V) ResetToggles() _G.FLOREX_Rainbow_Toggle   = V end })
+NamesTab:AddToggle({ Name = "أحمر وأسود فخم 🔴",      Default = false, Callback = function(V) ResetToggles() _G.FLOREX_RedBlack_Toggle  = V end })
+NamesTab:AddToggle({ Name = "أزرق وأبيض بارد ⚡",     Default = false, Callback = function(V) ResetToggles() _G.FLOREX_Neon_Toggle      = V end })
+NamesTab:AddToggle({ Name = "ذهبي وأبيض 👑",          Default = false, Callback = function(V) ResetToggles() _G.FLOREX_GoldWhite_Toggle = V end })
+NamesTab:AddToggle({ Name = "بنفسجي وورديّ 💜",       Default = false, Callback = function(V) ResetToggles() _G.FLOREX_PurplePink_Toggle= V end })
+NamesTab:AddToggle({ Name = "أخضر وأسود 🟢",          Default = false, Callback = function(V) ResetToggles() _G.FLOREX_GreenBlack_Toggle= V end })
+NamesTab:AddToggle({ Name = "تأثير النيران 🔥",        Default = false, Callback = function(V) ResetToggles() _G.FLOREX_Fire_Toggle      = V end })
+NamesTab:AddToggle({ Name = "تأثير الجليد ❄️",        Default = false, Callback = function(V) ResetToggles() _G.FLOREX_Ice_Toggle       = V end })
+NamesTab:AddToggle({ Name = "تأثير البرق ⚡",          Default = false, Callback = function(V) ResetToggles() _G.FLOREX_Thunder_Toggle   = V end })
+NamesTab:AddToggle({ Name = "تأثير الفامباير 🧛",     Default = false, Callback = function(V) ResetToggles() _G.FLOREX_Vampire_Toggle   = V end })
+NamesTab:AddToggle({ Name = "تأثير المجرة 🌌",        Default = false, Callback = function(V) ResetToggles() _G.FLOREX_Galaxy_Toggle    = V end })
+NamesTab:AddToggle({ Name = "تأثير الزمرد 💎",        Default = false, Callback = function(V) ResetToggles() _G.FLOREX_Emerald_Toggle   = V end })
+NamesTab:AddToggle({ Name = "تأثير الحمم 🌋",         Default = false, Callback = function(V) ResetToggles() _G.FLOREX_Magma_Toggle     = V end })
+NamesTab:AddToggle({ Name = "تأثير السام 🧪",         Default = false, Callback = function(V) ResetToggles() _G.FLOREX_Toxic_Toggle     = V end })
 
-NamesTab:AddToggle({
-    Name = "Azul e Branco ⚡",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_Neon_Toggle = Value
-    end
-})
-
-NamesTab:AddToggle({
-    Name = "Dourado e Branco 👑",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_GoldWhite_Toggle = Value
-    end
-})
-
-NamesTab:AddToggle({
-    Name = "Roxo e Rosa 💜",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_PurplePink_Toggle = Value
-    end
-})
-
-NamesTab:AddToggle({
-    Name = "Verde e Preto 🟢",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_GreenBlack_Toggle = Value
-    end
-})
-
-NamesTab:AddToggle({
-    Name = "Efeito Fogo 🔥",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_Fire_Toggle = Value
-    end
-})
-
-NamesTab:AddToggle({
-    Name = "Efeito Gelo ❄️",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_Ice_Toggle = Value
-    end
-})
-
-NamesTab:AddToggle({
-    Name = "Efeito Vampiro 🧛",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_Vampire_Toggle = Value
-    end
-})
-
-NamesTab:AddToggle({
-    Name = "Efeito Galáxia 🌌",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_Galaxy_Toggle = Value
-    end
-})
-
-NamesTab:AddToggle({
-    Name = "Efeito Trovão ⚡",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_Thunder_Toggle = Value
-    end
-})
-
-NamesTab:AddToggle({
-    Name = "Efeito Esmeralda 💎",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_Emerald_Toggle = Value
-    end
-})
-
-NamesTab:AddToggle({
-    Name = "Efeito Magma 🌋",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_Magma_Toggle = Value
-    end
-})
-
-NamesTab:AddToggle({
-    Name = "Efeito Tóxico 🧪",
-    Default = false,
-    Callback = function(Value)
-        ResetToggles()
-        _G.FLOREX_Toxic_Toggle = Value
-    end
-})
-
+-- ══════════════════════════════════════════
 -- حلقة الأسماء المتحركة
+-- ══════════════════════════════════════════
 task.spawn(function()
     local index = 1
     while true do
@@ -340,14 +211,11 @@ task.spawn(function()
             pcall(function()
                 local RE = ReplicatedStorage:FindFirstChild("RE")
                 if RE then
-                    local remote = RE:FindFirstChild("1RPNam1eTex1t")
-                    if remote then
-                        local nText = _G.Names_List[index]
-                        local bText = _G.Bios_List[index]
-                        if nText and nText ~= "" then remote:FireServer("RolePlayName", nText) end
-                        if bText and bText ~= "" then remote:FireServer("RolePlayBio", bText) end
-                        index = (index % 5) + 1
-                    end
+                    local nText = _G.Names_List[index]
+                    local bText = _G.Bios_List[index]
+                    if nText and nText ~= "" then RE:FindFirstChild("1RPNam1eTex1t"):FireServer("RolePlayName", nText) end
+                    if bText and bText ~= "" then RE:FindFirstChild("1RPNam1eTex1t"):FireServer("RolePlayBio", bText) end
+                    index = (index % 5) + 1
                 end
             end)
         end
@@ -355,7 +223,9 @@ task.spawn(function()
     end
 end)
 
+-- ══════════════════════════════════════════
 -- حلقة الألوان
+-- ══════════════════════════════════════════
 task.spawn(function()
     while true do
         pcall(function()
@@ -364,7 +234,7 @@ task.spawn(function()
             if colorRE then
                 local color = nil
                 if _G.FLOREX_Rainbow_Toggle then
-                    color = Color3.fromHSV((tick() * (_G.FLOREX_Rainbow_Speed / 5)) % 1, 1, 1)
+                    color = Color3.fromHSV(tick() % _G.FLOREX_Rainbow_Speed / _G.FLOREX_Rainbow_Speed, 1, 1)
                 elseif _G.FLOREX_RedBlack_Toggle then
                     color = Color3.fromRGB(255,0,0):Lerp(Color3.fromRGB(0,0,0), math.abs(math.sin(tick()*2)))
                 elseif _G.FLOREX_Neon_Toggle then
