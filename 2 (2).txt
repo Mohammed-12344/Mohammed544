@@ -1771,11 +1771,6 @@ function redzlib:MakeWindow(Configs)
 		end
 	end
 
-	local ParticleConnection = RunService.Heartbeat:Connect(function()
-		UpdateCyberpunkParticles()
-		SpawnCyberpunkSystem()
-	end)
-
 -- ======================================================
 -- ضع هذا الكود بعد سطر:
 --   local ParticleConnection = RunService.Heartbeat:Connect(...)
