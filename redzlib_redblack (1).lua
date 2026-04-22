@@ -914,8 +914,8 @@ function redzlib:MakeWindow(Configs)
 		Visible = true
 	})
 
-	-- نسخة المقدمة (فوق كل شيء، في ScreenGui مباشرة)
-	local RotatingLogoFG = Create("ImageLabel", ScreenGui, {
+	-- نسخة المقدمة (فوق كل شيء، في وسط النافذة الرئيسية)
+	local RotatingLogoFG = Create("ImageLabel", MainFrame, {
 		Name = "RotatingLogoFG",
 		Size = UDim2.new(0, 250, 0, 250),
 		Position = UDim2.new(0.5, 0, 0.5, 0),
