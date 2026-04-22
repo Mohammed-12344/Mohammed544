@@ -893,25 +893,61 @@ function redzlib:MakeWindow(Configs)
 	})
 
 	-- ══════════════════════════════════════════
-	--  الشعار الدوار في الخلفية
+	--  الشعار الدوار
+	--  + = في الخلفية (ZIndex منخفض، بدون شفافية)
+	--  - = في المقدمة وسط الشاشة (ZIndex عالي، بدون شفافية)
 	-- ══════════════════════════════════════════
+	local logoRotation      = 0
+	local logoRotationSpeed = 150  -- نفس السرعة الأصلية
+	local logoInForeground  = false  -- false = خلفية، true = مقدمة
+
+	-- الشعار في الخلفية (داخل ParticleContainer)
 	local RotatingLogo = Create("ImageLabel", ParticleContainer, {
 		Name = "RotatingLogo",
-		Size = UDim2.new(0, 220, 0, 220),
+		Size = UDim2.new(0, 250, 0, 250),
 		Position = UDim2.new(0.5, 0, 0.5, 0),
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		BackgroundTransparency = 1,
 		Image = "rbxassetid://85742154967174",
-		ImageTransparency = 0.55,   -- شفافية خفيفة لتبدو كخلفية
-		ZIndex = -4
+		ImageTransparency = 0,   -- بدون شفافية
+		ZIndex = -4,
+		Visible = true
 	})
 
-	-- دوران مستمر للشعار
-	local logoRotation = 0
-	local logoRotationSpeed = 25  -- بطيء وجميل كخلفية
+	-- نسخة المقدمة (فوق كل شيء، في ScreenGui مباشرة)
+	local RotatingLogoFG = Create("ImageLabel", ScreenGui, {
+		Name = "RotatingLogoFG",
+		Size = UDim2.new(0, 250, 0, 250),
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+		AnchorPoint = Vector2.new(0.5, 0.5),
+		BackgroundTransparency = 1,
+		Image = "rbxassetid://85742154967174",
+		ImageTransparency = 0,
+		ZIndex = 999,
+		Visible = false
+	})
+
+	-- دوران مستمر للشعارين معاً
 	local logoRotationConnection = RunService.RenderStepped:Connect(function(dt)
 		logoRotation = logoRotation + (logoRotationSpeed * dt)
-		RotatingLogo.Rotation = logoRotation
+		RotatingLogo.Rotation   = logoRotation
+		RotatingLogoFG.Rotation = logoRotation
+	end)
+
+	-- مفتاح + يظهر في الخلفية، مفتاح - يظهر في المقدمة
+	UserInputService.InputBegan:Connect(function(input, gpe)
+		if gpe then return end
+		if input.KeyCode == Enum.KeyCode.Equals or input.KeyCode == Enum.KeyCode.KeypadPlus then
+			-- + : خلفية
+			logoInForeground = false
+			RotatingLogo.Visible   = true
+			RotatingLogoFG.Visible = false
+		elseif input.KeyCode == Enum.KeyCode.Minus or input.KeyCode == Enum.KeyCode.KeypadMinus then
+			-- - : مقدمة (وسط الشاشة، تلف فوق كل شيء)
+			logoInForeground = true
+			RotatingLogo.Visible   = false
+			RotatingLogoFG.Visible = true
+		end
 	end)
 
 	-- ══════════════════════════════════════════
@@ -1161,6 +1197,7 @@ function redzlib:MakeWindow(Configs)
 			Options = {
 				{"Confirm", function()
 					logoRotationConnection:Disconnect()
+					RotatingLogoFG:Destroy()
 					ScreenGui:Destroy()
 				end},
 				{"Cancel"}
@@ -1182,7 +1219,7 @@ function redzlib:MakeWindow(Configs)
 					particle.Frame.Visible = true
 				end
 			end
-			RotatingLogo.Visible = true
+			if not logoInForeground then RotatingLogo.Visible = true end
 			Minimized = false
 		else
 			MinimizeButton.Image = "rbxassetid://10734924532"
