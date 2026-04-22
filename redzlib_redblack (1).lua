@@ -914,31 +914,18 @@ function redzlib:MakeWindow(Configs)
 		Visible = true
 	})
 
-	-- نسخة المقدمة (في وسط النافذة بالضبط)
-	local RotatingLogoFG = Create("ImageLabel", ScreenGui, {
+	-- نسخة المقدمة (في نص MainFrame مباشرة)
+	local RotatingLogoFG = Create("ImageLabel", MainFrame, {
 		Name = "RotatingLogoFG",
 		Size = UDim2.fromOffset(250, 250),
+		Position = UDim2.fromScale(0.5, 0.5),
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		BackgroundTransparency = 1,
 		Image = "rbxassetid://85742154967174",
 		ImageTransparency = 0,
-		ZIndex = 999,
+		ZIndex = 10,
 		Visible = false
 	})
-
-	-- تحديث موضع الشعار ليكون دايماً في نص النافذة
-	local function UpdateLogoFGPosition()
-		local absPos  = MainFrame.AbsolutePosition
-		local absSize = MainFrame.AbsoluteSize
-		RotatingLogoFG.Position = UDim2.fromOffset(
-			absPos.X + absSize.X / 2,
-			absPos.Y + absSize.Y / 2
-		)
-	end
-
-	MainFrame:GetPropertyChangedSignal("AbsolutePosition"):Connect(UpdateLogoFGPosition)
-	MainFrame:GetPropertyChangedSignal("AbsoluteSize"):Connect(UpdateLogoFGPosition)
-	task.defer(UpdateLogoFGPosition)
 
 	-- دوران مستمر للشعارين معاً
 	local logoRotationConnection = RunService.RenderStepped:Connect(function(dt)
